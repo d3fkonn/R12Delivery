@@ -1,0 +1,24 @@
+<h1>Employees</h1>
+
+<%= link_to "New employee", new_employee_path, class: "btn btn-primary" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Address</th>
+      <th>Phone</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.user.name %></td>
+        <td><%= employee.address.street_address %>, <%= employee.address.city %>, <%= employee.address.postal_code %></td>
+        <td><%= employee.phone %></td>
+        <td><%= employee.email %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
