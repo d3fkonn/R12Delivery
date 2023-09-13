@@ -17,4 +17,4 @@
 - email: erica.ger@gmail.com 
 - password: password
 
-or any other user in the employee table
+Any employee in the table works

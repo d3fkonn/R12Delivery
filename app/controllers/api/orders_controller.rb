@@ -3,6 +3,49 @@ module Api
     skip_before_action :verify_authenticity_token
     include ApiHelper
 
+    def create
+      restaurant_id, customer_id, products = params.values_at(:restaurant_id, :customer_id, :products)
+  
+  
+      # Validate required parameters
+      unless restaurant_id.present? && customer_id.present? && products.present?
+        return render_400_error("Restaurant ID, customer ID, and products are required")
+      end
+  
+      restaurant = Restaurant.find_by(id: restaurant_id)
+      customer = Customer.find_by(id: customer_id)
+  
+      # Validate foreign keys exists
+      unless restaurant && customer
+        return render_422_error("Invalid restaurant or customer ID")
+      end
+  
+      order = Order.create!(restaurant_id: restaurant_id, customer_id: customer_id, order_status_id: OrderStatus.find_by(name: "pending")&.id)
+  
+      # Validate order
+      unless order
+       return render_422_error("Failed to create order")
+      end
+  
+      # Validate and create product orders
+      products.each do |product_params|
+        product = Product.find_by(id: product_params[:id])
+        
+        unless product
+          order.destroy
+          return render_422_error("Invalid product ID")
+        end
+    
+        order.product_orders.create!(product_id: product.id, product_quantity: product_params[:quantity].to_i, product_unit_cost: product.cost)
+      end
+      response_data = {
+        order: [order],
+        products: format_products_response(order.product_orders)
+    }
+        render json: response_data, status: :created
+
+      
+    end
   # get api/order/:type/:id
   def index
     type = params[:type]
@@ -87,4 +130,5 @@ module Api
       render json: { status: order.order_status.name }, status: :ok
     end
   end
+  
 end

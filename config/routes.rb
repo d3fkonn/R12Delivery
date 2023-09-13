@@ -6,11 +6,11 @@ Rails.application.routes.draw do
   
   # API
   namespace :api do
+    post "orders", to: "orders#create"
     post "login", to: "auth#index"
     get "restaurants", to: "restaurants#index"
     get "products", to: "products#index"
     get "orders", to: "orders#index"
-    post "orders", to: "orders#create"
     get "order/:type/:id", to: "orders#index"
     post "order/:id/status", to: "orders#set_status"
     
