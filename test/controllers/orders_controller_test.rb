@@ -86,4 +86,72 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_response 422
   end
 
+  test "post api/orders success"
+  post "api/orders", body:{
+    "restaurant_id": 1,
+    "customer_id": 3,
+    "products": [
+                 {
+                   "id": 2,
+                   "quantity": 1
+                 },
+                 {
+                   "id": 3,
+                   "quantity": 3
+                 }
+               ]
+  }
+  assert_response 200
+  end
+  test "post api/orders Invalid productID"
+  post "api/orders", body:{
+    "restaurant_id": 1,
+    "customer_id": 3,
+    "products": [
+                 {
+                   "id": bloth,
+                   "quantity": 1
+                 },
+                 {
+                   "id": 99999,
+                   "quantity": 3
+                 }
+               ]
+  }
+  assert_response 422
+  end
+  test "post api/orders Invalid Customer ID"
+  post "api/orders", body:{
+    "restaurant_id": 1,
+    "customer_id": 2742,
+    "products": [
+                 {
+                   "id": 2,
+                   "quantity": 1
+                 },
+                 {
+                   "id": 3,
+                   "quantity": 3
+                 }
+               ]
+  }
+  assert_response 422
+  end
+  test "post api/orders BLANk"
+  post "api/orders", body:{
+    "restaurant_id": ,
+    "customer_id": ,
+    "products": [
+                 {
+                   "id": ,
+                   "quantity":
+                 },
+                 {
+                   "id": ,
+                   "quantity": 
+                 }
+               ]
+  }
+  assert_response 400
+  end
 end
