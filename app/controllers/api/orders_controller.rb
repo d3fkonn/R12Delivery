@@ -51,6 +51,10 @@ module Api
     type = params[:type]
     id = params[:id]
 
+    if type.blank? || id.blank?
+      return render json: { error: "Both 'type' and 'id' parameters are required." }, status: :bad_request
+    end
+  
     case type
     when 'customer'
       customer = Customer.find_by(id: id)
