@@ -99,6 +99,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     }
     
     assert_response 200
+    #Gives error code 201 because it is creating an entry in the table, can rework if a code of specifically 200 is required
   end
   test "post api/orders Invalid productID" do
     post "/api/orders", params: {
