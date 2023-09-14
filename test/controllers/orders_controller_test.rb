@@ -86,72 +86,70 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_response 422
   end
 
-  test "post api/orders success"
-  post "api/orders", body:{
-    "restaurant_id": 1,
-    "customer_id": 3,
-    "products": [
-                 {
-                   "id": 2,
-                   "quantity": 1
-                 },
-                 {
-                   "id": 3,
-                   "quantity": 3
-                 }
-               ]
-  }
-  assert_response 200
+  test "post api/orders success" do
+    post "/api/orders", params: {
+      "restaurant_id" => 1,
+      "customer_id" => 1,
+      "products" => [
+        {
+          "id" => 1,
+          "quantity" => 1
+        }
+      ]
+    }
+    
+    assert_response 200
   end
-  test "post api/orders Invalid productID"
-  post "api/orders", body:{
-    "restaurant_id": 1,
-    "customer_id": 3,
-    "products": [
-                 {
-                   "id": bloth,
-                   "quantity": 1
-                 },
-                 {
-                   "id": 99999,
-                   "quantity": 3
-                 }
-               ]
-  }
+  test "post api/orders Invalid productID" do
+    post "/api/orders", params: {
+      "restaurant_id" => 1,
+      "customer_id" => 3,
+      "products" => [
+        {
+          "id" => "Test",
+          "quantity" => 1
+        },
+        {
+          "id" => 9999,
+          "quantity" => 3
+        }
+      ]
+    }
   assert_response 422
-  end
-  test "post api/orders Invalid Customer ID"
-  post "api/orders", body:{
+end
+  test "post api/orders Invalid Customer ID" do
+  post "/api/orders", params:{
     "restaurant_id": 1,
     "customer_id": 2742,
     "products": [
                  {
-                   "id": 2,
-                   "quantity": 1
+                   "id"=> 2,
+                   "quantity"=> 1
                  },
                  {
-                   "id": 3,
-                   "quantity": 3
+                   "id" => 3,
+                   "quantity" => 3
                  }
                ]
   }
   assert_response 422
-  end
-  test "post api/orders BLANk"
-  post "api/orders", body:{
-    "restaurant_id": ,
-    "customer_id": ,
+end
+
+  test "post api/orders BLANk" do
+  post "/api/orders", params:{
+    "restaurant_id": "",
+    "customer_id": "",
     "products": [
                  {
-                   "id": ,
-                   "quantity":
+                   "id" => "",
+                   "quantity" => ""
                  },
                  {
-                   "id": ,
-                   "quantity": 
+                   "id"=> "",
+                   "quantity" => "" 
                  }
                ]
   }
   assert_response 400
-  end
+end
 end
